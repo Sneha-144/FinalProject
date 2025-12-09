@@ -6,7 +6,7 @@ title: "Conclusion & Recommendations"
 
 This study successfully applied **advanced data analytics and machine learning techniques** to the College Scorecard dataset, moving beyond traditional descriptive statistics to uncover complex, non-linear drivers of institutional success.
 
-By integrating **Unsupervised Learning (PCA, Clustering)** with **Supervised methods (Random Forest, SVM)** and **Spatial Econometrics**, we derived actionable insights for higher education policy.
+By integrating **Unsupervised Learning (PCA, Clustering)** with **Supervised methods (Random Forest, KNN)** and **Spatial Econometrics**, we derived actionable insights for higher education policy.
 
 **Key Analytical Findings:**
 
@@ -18,7 +18,7 @@ By integrating **Unsupervised Learning (PCA, Clustering)** with **Supervised met
 3.  **The "Education Desert" Effect:** Our spatial analysis provided robust statistical evidence ($p < 0.05$) that geographic isolation negatively correlates with completion rates.
     This highlights a critical equity gap: students in remote areas face structural barriers that funding alone (`INEXPFTE`) cannot fully mitigate.
 
-4.  **Precision Classification:** The Support Vector Machine (SVM) outperformed traditional linear classifiers (Kappa = 0.41), successfully mapping the complex, multi-dimensional decision boundary that defines "High Value" institutions.
+4.  **Precision Classification:** The **K-Nearest Neighbors (KNN)** model (Kappa = 0.41) successfully mapped the complex local clusters that define "High Value" institutions.
 
 **Strategic Implications:**
 

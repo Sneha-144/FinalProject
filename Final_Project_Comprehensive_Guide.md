@@ -48,12 +48,11 @@ This document contains **everything** you need to know about your analysis. It c
 *   **The Question:** Does a "Tech Focus" (PC1) help *all* schools, or does it depend on the *School Type* (Cluster)?
 *   **The Model:** `Grad Rate ~ PC1 * Cluster`. We visually inspect if the lines cross (Interaction Effect) using an Interaction Plot.
 
-## Method 4: Classification (SVM vs. KNN)
+## Method 4: Classification (KNN)
 *   **Source:** `Logistic-n-knn.html` & Reference Projects
 *   **Goal:** Predict if a school is "High Value".
 *   **Models:**
-    1.  **K-Nearest Neighbors (KNN):** Classifies based on similarity.
-    2.  **Support Vector Machine (SVM):** Uses a complex "Hyperplane" to slice the data.
+    1.  **K-Nearest Neighbors (KNN):** Uses similarity (neighbors) to classify schools as "High Value".
 *   **Metric (Kappa):** We use **Cohen's Kappa** to correct for "lucky guessing".
 
 ## Method 5: Spatial Analysis (Geography)

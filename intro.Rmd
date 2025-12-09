@@ -12,6 +12,6 @@ This project moves beyond simple descriptive statistics to apply **Master's Leve
 
 2.  **Graduation Rate (Interaction):** Does the impact of a "Tech Focus" depend on the *School Type* (Elite vs. Budget)?
 
-3.  **Classification (SVM):** Can a *Support Vector Machine* accurately classify "High Value" schools?
+3.  **Classification (KNN):** Can *K-Nearest Neighbors* accurately classify "High Value" schools?
 
 4.  **Spatial Analysis (Geography):** Do "Education Deserts" (geographic isolation) negatively impact completion rates?

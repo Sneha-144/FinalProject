@@ -197,35 +197,21 @@ rpart.plot(tree_model, main = "Q2: Decision Tree for Graduation Rate", type = 3,
 # RESEARCH QUESTION 3: The "Value" Classification (Classification)
 # "Can we classify schools as 'High Value' (High Earnings + Low Cost)?"
 # ==============================================================================
-print("\n--- Q3: Value Classification (High Value Schools) ---")
+print("\n--- Q3: Classification (KNN) ---")
 
-# 1. Define "High Value"
-# High Value = Top 33% Earnings AND Bottom 50% Cost (Arbitrary but logical definition)
+# Define High Value
 earn_thresh <- quantile(df_clean$MD_EARN_WNE_P10, 0.66)
 cost_thresh <- quantile(df_clean$COSTT4_A, 0.50)
+df_clean <- df_clean %>% mutate(High_Value = as.factor(ifelse(MD_EARN_WNE_P10 > earn_thresh & COSTT4_A < cost_thresh, "Yes", "No")))
 
-df_clean <- df_clean %>%
-    mutate(High_Value = as.factor(ifelse(MD_EARN_WNE_P10 > earn_thresh & COSTT4_A < cost_thresh, "Yes", "No")))
-
+print("Class Distribution:")
 print(table(df_clean$High_Value))
 
-# Split Data (Stratified)
-trainIndex_class <- createDataPartition(df_clean$High_Value, p = .8, list = FALSE)
-df_train_class <- df_clean[trainIndex_class, ]
-df_test_class <- df_clean[-trainIndex_class, ]
-
-# 2. Logistic Regression
-# Using PC1 (Tech) and Cluster instead of raw PCIP
-log_model <- glm(High_Value ~ SAT_AVG + ADM_RATE + UGDS + REGION + PC1 + Cluster,
-    data = df_train_class, family = binomial
-)
-
-# 3. K-Nearest Neighbors (KNN)
-# We need to scale data for KNN
+# Train KNN Model (using Cross-Validation)
 set.seed(123)
 ctrl <- trainControl(method = "cv", number = 10)
 knn_model <- train(High_Value ~ SAT_AVG + ADM_RATE + UGDS + REGION + PC1 + Cluster,
-    data = df_train_class,
+    data = df_clean,
     method = "knn",
     trControl = ctrl,
     preProcess = c("center", "scale"),
@@ -234,58 +220,14 @@ knn_model <- train(High_Value ~ SAT_AVG + ADM_RATE + UGDS + REGION + PC1 + Clust
 
 print(knn_model)
 
-# 4. Support Vector Machine (SVM) - Master's Level Addition
-# Using Radial Basis Function (RBF) Kernel for non-linear separation
-svm_model <- svm(High_Value ~ SAT_AVG + ADM_RATE + UGDS + REGION + PC1 + Cluster,
-    data = df_train_class,
-    kernel = "radial",
-    cost = 10,
-    scale = TRUE
-)
+# Visualization: Decision Boundary
+# We plot PC1 vs PC2 and color by Predicted Value
+df_clean$Pred_KNN <- predict(knn_model, newdata = df_clean)
 
-# 5. Evaluation (Confusion Matrix & Kappa)
-print("--- Evaluation: Confusion Matrix & Kappa ---")
-
-# Logistic Prediction
-prob_log <- predict(log_model, newdata = df_test_class, type = "response")
-pred_log <- as.factor(ifelse(prob_log > 0.5, "Yes", "No"))
-# Ensure factor levels match
-levels(pred_log) <- levels(df_test_class$High_Value)
-cm_log <- confusionMatrix(pred_log, df_test_class$High_Value)
-
-# KNN Prediction
-pred_knn <- predict(knn_model, newdata = df_test_class)
-cm_knn <- confusionMatrix(pred_knn, df_test_class$High_Value)
-
-# SVM Prediction
-pred_svm <- predict(svm_model, newdata = df_test_class)
-cm_svm <- confusionMatrix(pred_svm, df_test_class$High_Value)
-
-print("Logistic Regression Performance:")
-print(cm_log$overall[c("Accuracy", "Kappa")])
-
-print("KNN Performance:")
-print(cm_knn$overall[c("Accuracy", "Kappa")])
-
-print("SVM Performance:")
-print(cm_svm$overall[c("Accuracy", "Kappa")])
-
-# Visualization: Decision Boundary (Simplified for 2D)
-# We plot PC1 vs PC2 and color by Predicted Value (SVM)
-# Note: We use the full dataset for this visualization to show the "Landscape"
-p4 <- df_clean %>%
-    mutate(Pred_SVM = predict(svm_model, newdata = df_clean)) %>%
-    ggplot(aes(x = PC1, y = PC2, color = Pred_SVM)) +
+p4 <- ggplot(df_clean, aes(x = PC1, y = PC2, color = Pred_KNN)) +
     geom_point(alpha = 0.6) +
-    labs(
-        title = "Q3: SVM Decision Boundary (Tech vs Arts Factors)",
-        subtitle = "How the model slices 'High Value' schools based on Curriculum",
-        x = "PC1 (Tech Factor)",
-        y = "PC2 (Arts/Humanities Factor)"
-    ) +
+    labs(title = "Q3: KNN Decision Boundary (Tech vs Arts Factors)", x = "PC1 (Tech Factor)", y = "PC2 (Arts Factor)") +
     theme_minimal()
-print(ggplotly(p4))
-
 print(ggplotly(p4))
 
 # ==============================================================================

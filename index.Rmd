@@ -19,4 +19,4 @@ output:
 
 ### Project Overview
 
-This project moves beyond simple descriptive statistics to apply **Master's Level Machine Learning and Spatial Analysis** techniques to the College Scorecard dataset. It investigates the non-linear relationship between curriculum and earnings, the spatial distribution of graduation rates, and classifies high-value institutions using Support Vector Machines.
+This project moves beyond simple descriptive statistics to apply **Master's Level Machine Learning and Spatial Analysis** techniques to the College Scorecard dataset. It investigates the non-linear relationship between curriculum and earnings, the spatial distribution of graduation rates, and classifies high-value institutions using **K-Nearest Neighbors (KNN)**.

@@ -9,7 +9,7 @@ This document provides a **step-by-step technical rationale** for every major bl
 *   **Why:**
     *   `randomForest`: For non-linear regression (RQ1). Standard linear regression assumes straight lines; RF captures complex curves.
     *   `pdp`: To "open the black box" of the Random Forest. It allows us to visualize the specific effect of one variable (Tech Focus) while averaging out others.
-    *   `e1071`: Contains the **Support Vector Machine (SVM)** algorithm, a standard tool in advanced data analytics.
+    *   `e1071`: Contains the **K-Nearest Neighbors (KNN)** algorithm and other statistical learning methods.
 
 ## 2. Data Loading & Cleaning
 **Code:** `cols_to_keep <- c(..., "LATITUDE", "LONGITUDE", "INEXPFTE", ...)`

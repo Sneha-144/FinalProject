@@ -1,19 +1,42 @@
 ---
-title: "Data Analysis"
+title: "STAT Final Project: Data Analysis - College Scorecard Data"
+author: "Sneha Sri"
+output: 
+  html_document:
+    theme: spacelab
+    css: style.css
+    toc: true
+    toc_float: true
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
-```
+# 1. Introduction & Objectives
+
+This project moves beyond simple descriptive statistics to apply **Master's Level Machine Learning and Spatial Analysis** techniques to the College Scorecard dataset.
+
+**Our Research Objectives:**
+
+1.  **Earnings (Non-Linear):** Can we predict 10-year earnings using *Random Forest* to capture non-linear curriculum effects?
+
+2.  **Graduation Rate (Interaction):** Does the impact of a "Tech Focus" depend on the *School Type* (Elite vs. Budget)?
+
+3.  **Classification (KNN):** Can *K-Nearest Neighbors* accurately classify "High Value" schools?
+
+4.  **Spatial Analysis (Geography):** Do "Education Deserts" (geographic isolation) negatively impact completion rates?
+
+------------------------------------------------------------------------
 
 # 2. Data Preparation & Feature Engineering
 
 We start by loading the data and applying advanced feature engineering: **PCA** (to reduce 30+ major variables) and **K-Means Clustering** (to identify school archetypes).
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+```
+
 ```{r load_data}
 # Load Libraries
 required_packages <- c("tidyverse", "plotly", "broom", "scales", "randomForest", "glmnet", "caret", "rpart", "rpart.plot", "pdp", "e1071")
-new_packages <- required_packages[!(required_packages %in% installed.packages()[, "Package"])]
+# new_packages <- required_packages[!(required_packages %in% installed.packages()[, "Package"])]
 # if (length(new_packages)) install.packages(new_packages, repos = "http://cran.us.r-project.org")
 
 library(tidyverse)
@@ -243,3 +266,29 @@ The **size** of the point corresponds to its **"Isolation Score"** (Distance to 
 We observe clusters of small, brightly colored dots in metropolitan areas, indicating high competition and generally higher completion rates.
 In contrast, the **"Education Deserts"**—represented by large, isolated dots in rural regions—often appear in darker purple shades, indicating lower graduation rates.
 This visual correlation reinforces our regression findings: geographic isolation is a significant barrier to student success, likely due to a lack of local resources, transfer options, and academic infrastructure.
+
+------------------------------------------------------------------------
+
+# 7. Conclusion & Strategic Recommendations
+
+This study successfully applied **advanced data analytics and machine learning techniques** to the College Scorecard dataset, moving beyond traditional descriptive statistics to uncover complex, non-linear drivers of institutional success.
+
+By integrating **Unsupervised Learning (PCA, Clustering)** with **Supervised methods (Random Forest, KNN)** and **Spatial Econometrics**, we derived actionable insights for higher education policy.
+
+**Key Analytical Findings:**
+
+1.  **Non-Linearity in ROI:** Our Random Forest model revealed that while a technical curriculum boosts earnings, the relationship is **non-linear**.
+    The Partial Dependence Plot (PDP) identified a point of diminishing returns, suggesting that a balanced curriculum may be more optimal than extreme specialization.
+
+2.  **Contextual Efficacy:** The Interaction Analysis demonstrated that "one size does not fit all." The impact of curriculum changes varies significantly by institutional archetype, indicating that policy interventions must be tailored to specific school types (e.g., Elite vs. Commuter).
+
+3.  **The "Education Desert" Effect:** Our spatial analysis provided robust statistical evidence ($p < 0.05$) that geographic isolation negatively correlates with completion rates.
+    This highlights a critical equity gap: students in remote areas face structural barriers that funding alone (`INEXPFTE`) cannot fully mitigate.
+
+4.  **Precision Classification:** The **K-Nearest Neighbors (KNN)** model (Kappa = 0.41) successfully mapped the complex local clusters that define "High Value" institutions.
+
+**Strategic Implications:**
+
+For policymakers and university administrators, these findings suggest a shift from broad, universal mandates to **targeted, data-driven interventions**.
+Investment strategies should prioritize digital infrastructure in "Education Deserts" and support diversified curricula rather than a singular focus on STEM.
+This project exemplifies how **Data Engineering and Analytics** can transform raw administrative data into strategic intelligence.

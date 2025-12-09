@@ -441,23 +441,42 @@ p3 &lt;- ggplot(df_clean, aes(x = PC1, y = C150_4, color = Cluster)) +
     theme_minimal()
 ggplotly(p3)</code></pre>
 </div>
-<div id="rq3-classification-svm" class="section level1">
-<h1>RQ3: Classification (SVM)</h1>
-<pre class="r"><code># Define High Value
-earn_thresh &lt;- quantile(df_clean$MD_EARN_WNE_P10, 0.66)
-cost_thresh &lt;- quantile(df_clean$COSTT4_A, 0.50)
-df_clean &lt;- df_clean %&gt;% mutate(High_Value = as.factor(ifelse(MD_EARN_WNE_P10 &gt; earn_thresh &amp; COSTT4_A &lt; cost_thresh, &quot;Yes&quot;, &quot;No&quot;)))
-
-# Train SVM
-svm_model &lt;- svm(High_Value ~ SAT_AVG + ADM_RATE + UGDS + REGION + PC1 + Cluster, data = df_clean, kernel = &quot;radial&quot;, cost = 10, scale = TRUE)
-
-# Decision Boundary Visualization (PC1 vs PC2)
-df_clean$Pred_SVM &lt;- predict(svm_model, newdata = df_clean)
-p4 &lt;- ggplot(df_clean, aes(x = PC1, y = PC2, color = Pred_SVM)) +
-    geom_point(alpha = 0.6) +
-    labs(title = &quot;SVM Decision Boundary (Tech vs Arts Factors)&quot;, x = &quot;PC1 (Tech Factor)&quot;, y = &quot;PC2 (Arts Factor)&quot;) +
-    theme_minimal()
-ggplotly(p4)</code></pre>
+<div id="rq3-classification-knn" class="section level1">
+<h1>RQ3: Classification (KNN)</h1>
+</div>
+<div
+id="question-can-we-classify-high-value-schools-high-earnings-low-cost"
+class="section level1">
+<h1>Question: Can we classify “High Value” schools (High Earnings, Low
+Cost)?</h1>
+</div>
+<div id="method-we-use-k-nearest-neighbors-knn." class="section level1">
+<h1>Method: We use K-Nearest Neighbors (KNN).</h1>
+</div>
+<div id="define-high-value" class="section level1">
+<h1>Define High Value</h1>
+<p>earn_thresh &lt;- quantile(df_clean<span
+class="math inline">\(MD_EARN_WNE_P10, 0.66)
+cost_thresh &lt;- quantile(df_clean\)</span>COSTT4_A, 0.50) df_clean
+&lt;- df_clean %&gt;% mutate(High_Value =
+as.factor(ifelse(MD_EARN_WNE_P10 &gt; earn_thresh &amp; COSTT4_A &lt;
+cost_thresh, “Yes”, “No”)))</p>
+</div>
+<div id="train-knn-model" class="section level1">
+<h1>Train KNN Model</h1>
+<p>set.seed(123) ctrl &lt;- trainControl(method = “cv”, number = 5)
+knn_model &lt;- train(High_Value ~ SAT_AVG + ADM_RATE + UGDS + REGION +
+PC1 + Cluster, data = df_clean, method = “knn”, trControl = ctrl,
+tuneLength = 10)</p>
+</div>
+<div id="decision-boundary-visualization-pc1-vs-pc2"
+class="section level1">
+<h1>Decision Boundary Visualization (PC1 vs PC2)</h1>
+<p>df_clean$Pred_KNN &lt;- predict(knn_model, newdata = df_clean) p4
+&lt;- ggplot(df_clean, aes(x = PC1, y = PC2, color = Pred_KNN)) +
+geom_point(alpha = 0.6) + labs(title = “KNN Decision Boundary (Tech vs
+Arts Factors)”, x = “PC1 (Tech Factor)”, y = “PC2 (Arts Factor)”) +
+theme_minimal() ggplotly(p4)</p>
 </div>
 <div id="rq4-spatial-analysis" class="section level1">
 <h1>RQ4: Spatial Analysis</h1>

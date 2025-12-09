@@ -474,18 +474,16 @@ We visually inspect if the lines cross (Interaction Effect) using an
 Interaction Plot.</li>
 </ul>
 </div>
-<div id="method-4-classification-svm-vs.-knn" class="section level2">
-<h2>Method 4: Classification (SVM vs. KNN)</h2>
+<div id="method-4-classification-knn" class="section level2">
+<h2>Method 4: Classification (KNN)</h2>
 <ul>
 <li><strong>Source:</strong> <code>Logistic-n-knn.html</code> &amp;
 Reference Projects</li>
 <li><strong>Goal:</strong> Predict if a school is “High Value”.</li>
 <li><strong>Models:</strong>
 <ol style="list-style-type: decimal">
-<li><strong>K-Nearest Neighbors (KNN):</strong> Classifies based on
-similarity.</li>
-<li><strong>Support Vector Machine (SVM):</strong> Uses a complex
-“Hyperplane” to slice the data.</li>
+<li><strong>K-Nearest Neighbors (KNN):</strong> Uses similarity
+(neighbors) to classify schools as “High Value”.</li>
 </ol></li>
 <li><strong>Metric (Kappa):</strong> We use <strong>Cohen’s
 Kappa</strong> to correct for “lucky guessing”.</li>

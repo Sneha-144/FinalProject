@@ -101,25 +101,31 @@ p3 <- ggplot(df_clean, aes(x = PC1, y = C150_4, color = Cluster)) +
 ggplotly(p3)
 ```
 
-# RQ3: Classification (SVM)
+# RQ3: Classification (KNN)
+# Question: Can we classify "High Value" schools (High Earnings, Low Cost)?
+# Method: We use K-Nearest Neighbors (KNN).
 
-```{r rq3}
 # Define High Value
 earn_thresh <- quantile(df_clean$MD_EARN_WNE_P10, 0.66)
 cost_thresh <- quantile(df_clean$COSTT4_A, 0.50)
 df_clean <- df_clean %>% mutate(High_Value = as.factor(ifelse(MD_EARN_WNE_P10 > earn_thresh & COSTT4_A < cost_thresh, "Yes", "No")))
 
-# Train SVM
-svm_model <- svm(High_Value ~ SAT_AVG + ADM_RATE + UGDS + REGION + PC1 + Cluster, data = df_clean, kernel = "radial", cost = 10, scale = TRUE)
+# Train KNN Model
+set.seed(123)
+ctrl <- trainControl(method = "cv", number = 5)
+knn_model <- train(High_Value ~ SAT_AVG + ADM_RATE + UGDS + REGION + PC1 + Cluster, 
+                   data = df_clean, 
+                   method = "knn", 
+                   trControl = ctrl, 
+                   tuneLength = 10)
 
 # Decision Boundary Visualization (PC1 vs PC2)
-df_clean$Pred_SVM <- predict(svm_model, newdata = df_clean)
-p4 <- ggplot(df_clean, aes(x = PC1, y = PC2, color = Pred_SVM)) +
+df_clean$Pred_KNN <- predict(knn_model, newdata = df_clean)
+p4 <- ggplot(df_clean, aes(x = PC1, y = PC2, color = Pred_KNN)) +
     geom_point(alpha = 0.6) +
-    labs(title = "SVM Decision Boundary (Tech vs Arts Factors)", x = "PC1 (Tech Factor)", y = "PC2 (Arts Factor)") +
+    labs(title = "KNN Decision Boundary (Tech vs Arts Factors)", x = "PC1 (Tech Factor)", y = "PC2 (Arts Factor)") +
     theme_minimal()
 ggplotly(p4)
-```
 
 # RQ4: Spatial Analysis
 
