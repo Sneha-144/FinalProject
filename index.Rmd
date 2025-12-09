@@ -2,7 +2,7 @@
 title: "STAT final project: Data analysis - College scorecard data"
 output:
   html_document:
-    theme: spacelab
+    theme: sandstone
 ---
 
 <div class="jumbotron">
