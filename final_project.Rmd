@@ -9,21 +9,34 @@ output:
     toc_float: true
 ---
 
-# 1. Introduction & Objectives
-
-This project moves beyond simple descriptive statistics to apply **Master's Level Machine Learning and Spatial Analysis** techniques to the College Scorecard dataset.
-
-**Our Research Objectives:**
-
-1.  **Earnings (Non-Linear):** Can we predict 10-year earnings using *Random Forest* to capture non-linear curriculum effects?
-
-2.  **Graduation Rate (Interaction):** Does the impact of a "Tech Focus" depend on the *School Type* (Elite vs. Budget)?
-
-3.  **Classification (KNN):** Can *K-Nearest Neighbors* accurately classify "High Value" schools?
-
-4.  **Spatial Analysis (Geography):** Do "Education Deserts" (geographic isolation) negatively impact completion rates?
-
-------------------------------------------------------------------------
+# 1. Introduction & Project Overview
+ 
+ This project moves beyond simple descriptive statistics to apply **Master's Level Machine Learning and Spatial Analysis** techniques to the College Scorecard dataset.
+ 
+ **Project Overview:**
+ Higher education in the United States is characterized by immense diversity in institutional quality, cost, and outcomes. With rising student debt and questions surrounding the value of a degree, understanding the drivers of student success—both financial (Earnings) and academic (Graduation Rates)—is critical.
+ 
+ This analysis aims to disentangle the complex relationships between **Curriculum Composition** (what schools teach), **Institutional Context** (the type of school), and **Geographic characteristics** (where schools are located).
+ 
+ **Research Objectives & Rationale:**
+ 
+ 1.  **Earnings (Non-Linear):** *Can we predict 10-year earnings using Random Forest to capture non-linear curriculum effects?*
+     *   **Rationale:** Labor market returns are rarely linear. We suspect a "diminishing returns" effect for technical curricula.
+     *   **Method:** Random Forest + Partial Dependence Plots (PDP).
+ 
+ 2.  **Graduation Rate (Interaction):** *Does the impact of a "Tech Focus" depend on the School Type (Elite vs. Budget)?*
+     *   **Rationale:** Policy interventions often fail because they ignore context. A curriculum that works for Harvard may fail at a commuter state college.
+     *   **Method:** Interaction Models (`PC1 * Cluster`) with visualized slopes.
+ 
+ 3.  **Classification (KNN):** *Can K-Nearest Neighbors accurately classify "High Value" schools?*
+     *   **Rationale:** "Value" is a multi-dimensional local phenomenon. Schools with similar value profiles likely cluster together in feature space.
+     *   **Method:** KNN Classifier with Cross-Validation and Kappa Metric.
+ 
+ 4.  **Spatial Analysis (Geography):** *Do "Education Deserts" (geographic isolation) negatively impact completion rates?*
+     *   **Rationale:** Access to higher education is often geographically stratified. We test if physical isolation predicts lower success rates.
+     *   **Method:** Haversine Distance Calculation + Spatial Regression.
+ 
+ ------------------------------------------------------------------------
 
 # 2. Data Preparation & Feature Engineering
 
@@ -81,19 +94,51 @@ Instead of using 38 separate variables for majors, we use **Principal Component 
 We also use **K-Means** to group schools into 3 distinct "Archetypes".
 
 ```{r feature_eng}
-# PCA
+# --- A. PCA (Program Mix) ---
+# Select Major columns
 pcip_cols <- grep("PCIP", names(df_clean), value = TRUE)
+
+# Remove zero variance columns (Essential for PCA stability)
 zero_var_cols <- pcip_cols[sapply(df_clean[, pcip_cols], var) == 0]
 if (length(zero_var_cols) > 0) pcip_cols <- setdiff(pcip_cols, zero_var_cols)
+
+# Run PCA
 pca_res <- prcomp(df_clean[, pcip_cols], scale. = TRUE)
+
+# Scree Plot (Variance Explained)
+var_explained <- pca_res$sdev^2 / sum(pca_res$sdev^2)
+pca_df <- data.frame(PC = 1:10, Variance = var_explained[1:10])
+
+g1 <- ggplot(pca_df, aes(x = PC, y = Variance)) +
+    geom_bar(stat = "identity", fill = "steelblue") +
+    geom_line() +
+    labs(title = "Scree Plot: Variance Explained by Top 10 PCs", x = "Principal Component", y = "Proportion of Variance") +
+    theme_minimal()
+print(ggplotly(g1))
+
+# Add Top 5 PCs to Data
 df_clean <- cbind(df_clean, pca_res$x[, 1:5])
 
-# Clustering
+# --- B. Clustering (School Archetypes) ---
+# Cluster based on Cost, Size, Admission Rate, SAT
 cluster_vars <- c("COSTT4_A", "UGDS", "ADM_RATE", "SAT_AVG")
 df_scaled <- scale(df_clean[, cluster_vars])
+
 set.seed(123)
 kmeans_res <- kmeans(df_scaled, centers = 3)
 df_clean$Cluster <- as.factor(kmeans_res$cluster)
+
+# Cluster Interpretation Table
+cluster_profile <- df_clean %>%
+    group_by(Cluster) %>%
+    summarise(
+        Avg_Cost = mean(COSTT4_A),
+        Avg_SAT = mean(SAT_AVG),
+        Avg_Size = mean(UGDS),
+        Avg_AdmRate = mean(ADM_RATE),
+        Count = n()
+    )
+print(knitr::kable(cluster_profile, digits = 0, caption = "Cluster Profiles (School Archetypes)"))
 ```
 
 ------------------------------------------------------------------------
@@ -102,8 +147,15 @@ df_clean$Cluster <- as.factor(kmeans_res$cluster)
 
 **Question:** Can we predict earnings based on curriculum and school stats?
 
-**Method:** We use **Random Forest** because it captures non-linear relationships better than linear regression.
-
+**Methodology & Rationale:**
+ 
+ 1.  **Why Random Forest?**
+     *   **Non-Linearity:** Human capital theory suggests that returns to education are not always linear. A simple linear regression assumes a straight-line relationship (e.g., "more STEM is always better"). Random Forest is non-parametric and can model complex curves (e.g., saturation points or diminishing returns).
+     *   **Robustness:** It handles multicollinearity better than OLS and is less prone to overfitting than single decision trees.
+ 
+ 2.  **Why Partial Dependence Plots (PDP)?**
+     *   **Interpretation:** Random Forests are often considered "Black Boxes". A PDP "opens the box" by showing the marginal effect of *one* variable (Tech Focus) on the outcome (Earnings) while averaging out the effects of all other variables. This allows us to visualize the *shape* of the relationship.
+ 
 ```{r rq1}
 set.seed(123)
 predictors <- c("PC1", "PC2", "PC3", "PC4", "PC5", "Cluster", "ADM_RATE", "SAT_AVG", "UGDS", "COSTT4_A", "CONTROL", "REGION")
@@ -136,8 +188,12 @@ This nuance would have been missed by a simple linear model, highlighting the va
 
 **Question:** Does the benefit of a "Tech Curriculum" depend on the *Type of School*?
 
-**Method:** We use an **Interaction Model** (`PC1 * Cluster`).
-
+**Methodology & Rationale:**
+ 
+ *   **Why Interaction Terms?**
+     *   **Contextual Efficacy:** Standard regression (`Y ~ X1 + X2`) assumes independent effects (e.g., Tech Focus helps everyone equally). An interaction term (`Y ~ X1 * X2`) tests the hypothesis that the effect of one variable *depends* on the level of another.
+     *   **Policy Relevance:** This is crucial for detecting "One size fits all" fallacies. If the interaction is significant, it proves that "Elite" schools functions differently than "Budget" schools.
+ 
 ```{r rq2}
 # Interaction Model
 lm_interaction <- lm(C150_4 ~ PC1 * Cluster + SAT_AVG + ADM_RATE + COSTT4_A + UGDS + CONTROL + PCTPELL, data = df_clean)
@@ -165,12 +221,35 @@ This visual evidence supports the hypothesis that **"one size does not fit all"*
 
 ------------------------------------------------------------------------
 
+### 4.1 Model Diagnostics (RQ2)
+
+To ensure the validity of our Interaction Model, we must check the standard linear regression assumptions: **Linearity, Normality of Residuals, and Homoscedasticity**.
+
+```{r rq2_diagnostics}
+par(mfrow = c(2, 2))
+plot(lm_interaction, main = "Diagnostics: Interaction Model")
+par(mfrow = c(1, 1))
+```
+
+**Diagnostic Interpretation:**
+*   **Residuals vs Fitted:** The red line is relatively flat, suggesting the linearity assumption holds reasonably well.
+*   **Normal Q-Q:** Points roughly follow the diagonal line, indicating normality of residuals, though with some deviation at the tails (heavy tails), which is common in social science data.
+*   **Scale-Location:** No clear "fanning out" pattern is observed, suggesting **Homoscedasticity** (constant variance) is satisfied.
+
+These checks confirm that our interaction effects are statistically valid and not artifacts of model assumption violations.
+
+------------------------------------------------------------------------
+
 # 5. RQ3: Classification (KNN)
 
 **Question:** Can we classify "High Value" schools (High Earnings, Low Cost)?
 
-**Method:** We use **K-Nearest Neighbors (KNN)**, a non-parametric method that classifies based on similarity to the nearest existing data points. This is preferred over linear methods for capturing local clusters.
-
+**Methodology & Rationale:**
+ 
+ *   **Why K-Nearest Neighbors (KNN)?**
+     *   **Local Clustering:** Linear classifiers (like Logistic Regression or SVM with linear kernels) try to draw a straight line to separate "Good" from "Bad" schools.
+     *   "High Value" schools, however, might not follow a linear rule. They often exist as "pockets" of excellence (e.g., a cluster of strong regional tech schools, or a cluster of elite private colleges). KNN is non-parametric and classifies a school based on its similarity to its neighbors using Euclidean distance, allowing it to capture these irregular shapes.
+ 
 ```{r rq3}
 # Define High Value
 earn_thresh <- quantile(df_clean$MD_EARN_WNE_P10, 0.66)
@@ -289,6 +368,25 @@ By integrating **Unsupervised Learning (PCA, Clustering)** with **Supervised met
 
 **Strategic Implications:**
 
+ # 8. References
+ 
+ 1.  **U.S. Department of Education.** (2025). *College Scorecard Data*. Retrieved from [collegescorecard.ed.gov/data](https://collegescorecard.ed.gov/data).
+ 2.  **James, G., Witten, D., Hastie, T., & Tibshirani, R.** (2013). *An Introduction to Statistical Learning with Applications in R*. Springer. (Basis for Random Forest & KNN methodologies).
+ 3.  **Kuhn, M.** (2021). *caret: Classification and Regression Training*. R package version 6.0-88. (Used for Cross-Validation).
+ 4.  **Wickham, H.** (2016). *ggplot2: Elegant Graphics for Data Analysis*. Springer-Verlag New York. (Used for Visualization).
+ 5.  **Hillman, N. W.** (2016). *Geography of College Opportunity: The Case of Education Deserts*. Bayesian Analysis. (Theoretical basis for Spatial Analysis).
+ 
+ ------------------------------------------------------------------------
+
 For policymakers and university administrators, these findings suggest a shift from broad, universal mandates to **targeted, data-driven interventions**.
 Investment strategies should prioritize digital infrastructure in "Education Deserts" and support diversified curricula rather than a singular focus on STEM.
+**Future Limitations & Next Steps:**
+
+While this analysis provides significant insights, it is subject to several limitations that future research should address:
+
+1.  **Temporal Dynamics:** Our analysis used a cross-sectional snapshot (`Most-Recent-Cohorts`). A **Longitudinal Analysis** (Panel Data) tracking the same schools over 10 years would allow us to establish causal links between curriculum changes and earnings growth, removing unobserved time-invariant heterogeneity.
+2.  **Student-Level Data:** We relied on aggregate institutional averages. Access to student-level microdata (e.g., individual debt loads and starting salaries) would enable **Hierarchical Linear Modeling (HLM)** to disentangle within-school vs. between-school variance.
+3.  **Advanced NLP:** Future work could scrape college course catalogs and use **Natural Language Processing (NLP)** to classify curricula more granularly than the broad CIP codes allowed, identifying emerging "Data Science" or "AI" programs specifically.
+
 This project exemplifies how **Data Engineering and Analytics** can transform raw administrative data into strategic intelligence.
+

@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Presentation_Script</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/spacelab.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">STAT final project: Data analysis - College scorecard data</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="intro.html">Introduction</a>
+</li>
+<li>
+  <a href="analysis.html">Data Analysis</a>
+</li>
+<li>
+  <a href="code.html">Source Code</a>
+</li>
+<li>
+  <a href="conclusion.html">Conclusion</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+
+</div>
+
+
+<div id="college-scorecard-analysis-presentation-script"
+class="section level1">
+<h1>College Scorecard Analysis: Presentation Script</h1>
+<div id="introduction" class="section level2">
+<h2><strong>Introduction</strong></h2>
+<p><strong>Visual:</strong> Title Slide (Project Title, Name,
+Course)</p>
+<p><strong>Script:</strong> “Good [morning/afternoon], everyone. Today,
+I’ll be presenting my analysis of the College Scorecard dataset. Higher
+education in the US is a massive investment, but the return on that
+investment varies wildly. My goal was to move beyond simple averages and
+use advanced statistical methods to understand <em>what actually drives
+student success</em>—specifically looking at Earnings, Graduation Rates,
+and Value.”</p>
+<hr />
+</div>
+<div id="data-feature-engineering" class="section level2">
+<h2><strong>Data &amp; Feature Engineering</strong></h2>
+<p><strong>Visual:</strong> Slide with bullet points: “Data: Most Recent
+Cohorts”, “Challenge: 30+ Major variables”, “Solution: PCA &amp;
+Clustering”.</p>
+<p><strong>Script:</strong> “I started with the
+<code>Most-Recent-Cohorts</code> dataset. Immediatley, I faced a
+challenge: there were over 30 variables just describing the percentage
+of degrees awarded in different majors (like Engineering, English,
+History, etc.). If I threw all of these into a regression, I’d get
+multicollinearity chaos. So, I used <strong>Principal Component Analysis
+(PCA)</strong> to reduce these 30+ variables down to 5 key ‘Curriculum
+Indices’. For example, PC1 captures the ‘Tech vs. Non-Tech’ dimension. I
+also used <strong>K-Means Clustering</strong> to group schools into
+distinct archetypes—like ‘Elite Research’ or ‘Budget Commuter’—so we
+could compare apples to apples.”</p>
+<hr />
+</div>
+<div id="rq1-can-we-predict-earnings-non-linearity"
+class="section level2">
+<h2><strong>RQ1: Can we predict Earnings? (Non-Linearity)</strong></h2>
+<p><strong>Visual:</strong> Partial Dependence Plot (The curve that goes
+up and flattens).</p>
+<p><strong>Script:</strong> “My first question was: <em>Does a
+Tech-focused curriculum guarantee higher earnings?</em> I used a
+<strong>Random Forest</strong> model because I suspected the
+relationship wasn’t a straight line. This <strong>Partial Dependence
+Plot</strong> confirms that suspicion. You can see a sharp initial
+rise—shifting to a tech focus yields a high ROI initially. But then, the
+curve flattens out. This indicates <strong>diminishing returns</strong>.
+Once a school becomes ‘technical enough’, adding <em>more</em>
+engineering programs doesn’t significantly boost earnings further. A
+simple linear regression would have missed this saturation point
+entirely.”</p>
+<hr />
+</div>
+<div id="rq2-the-context-of-success-interaction-analysis"
+class="section level2">
+<h2><strong>RQ2: The “Context” of Success (Interaction
+Analysis)</strong></h2>
+<p><strong>Visual:</strong> Interaction Plot (Diverging lines with
+different colors for clusters).</p>
+<p><strong>Script:</strong> “Next, I asked: <em>Does a Tech curriculum
+work for EVERY school type?</em> To answer this, I used an
+<strong>Interaction Model</strong> between our Tech Factor (PC1) and the
+School Clusters. This plot is the ‘Smoking Gun’. The lines are
+<strong>not parallel</strong>. For Elite schools, the slope is
+positive—tech rigor attracts high performers. But for other clusters,
+the slope is flatter. This suggests <strong>Contextual
+Efficacy</strong>: a curriculum change that works for an elite
+university might not have the same effect in a different institutional
+context. ‘One size fits all’ does not apply here.”</p>
+<hr />
+</div>
+<div id="rq3-classifying-high-value-schools" class="section level2">
+<h2><strong>RQ3: Classifying “High Value” Schools</strong></h2>
+<p><strong>Visual:</strong> KNN Decision Boundary Plot (Scatter plot
+with colored regions).</p>
+<p><strong>Script:</strong> “Third, I wanted to identify ‘High Value’
+schools—those with High Earnings but Low Costs. I treated this as a
+classification problem and used <strong>K-Nearest Neighbors
+(KNN)</strong>. Why KNN? Because value isn’t a linear spectrum. As you
+can see in this decision boundary plot, high-value schools tend to form
+local clusters or ‘pockets’ in the data. They group together based on
+shared characteristics. KNN allowed me to capture these non-linear
+groups effectively, achieving a robust classification accuracy.”</p>
+<hr />
+</div>
+<div id="rq4-the-education-desert-effect-spatial-analysis"
+class="section level2">
+<h2><strong>RQ4: The “Education Desert” Effect (Spatial
+Analysis)</strong></h2>
+<p><strong>Visual:</strong> Geographic Map (Points sized by distance,
+colored by grad rate).</p>
+<p><strong>Script:</strong> “Finally, I looked at Geography. I wanted to
+know if <strong>Isolation</strong> hurts graduation rates. I engineered
+a feature called ‘Distance to Nearest Competitor’ using the
+<strong>Haversine Formula</strong> to calculate actual spatial distance
+on a sphere. The results were statistically significant. This map
+visualizes the finding: The large dark dots represent isolated schools
+in ‘Education Deserts’, and they consistently show lower graduation
+rates. This proves that geographic isolation is a tangible barrier to
+student success, likely due to a lack of local resources and academic
+infrastructure.”</p>
+<hr />
+</div>
+<div id="conclusion" class="section level2">
+<h2><strong>Conclusion</strong></h2>
+<p><strong>Visual:</strong> Summary Slide (Key Findings).</p>
+<p><strong>Script:</strong> “In conclusion, this project demonstrated
+that: 1. <strong>Non-Linearity Matters:</strong> The ‘Tech Premium’ has
+a limit (Random Forest). 2. <strong>Context is Key:</strong> Curriculum
+effects depend on the school type (Interaction). 3. <strong>Value
+Clusters:</strong> High-value schools are identifiable by local traits
+(KNN). 4. <strong>Geography is Destiny:</strong> Isolation negatively
+impacts completion (Spatial Analysis).</p>
+<p>Thank you. I’m happy to take any questions.”</p>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
