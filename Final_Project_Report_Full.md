@@ -20,26 +20,26 @@ This project moves beyond simple descriptive statistics to apply **Master's Leve
 *   **Rationale for Methods:**
     *   **Random Forest:** Human capital theory suggests that returns to education are not linear (e.g., diminishing returns). We chose Random Forest because it is non-parametric and naturally captures these complex curves and saturation points, where a linear OLS model would fail.
     *   **Partial Dependence Plots (PDP):** To solve the "Black Box" problem of Random Forests, we used PDPs to isolate the marginal effect of the "Tech Curriculum" (PC1) on earnings, allowing us to visualize the exact shape of the relationship.
-*   **Findings:** The "Tech Premium" exists but plateaus. Adding engineering programs helps, but only up to a point (diminishing returns).
+*   **Detailed Plot Analysis (Findings):** The Partial Dependence Plot reveals a critical insight: the relationship between Tech Focus (`PC1`) and Earnings is **non-linear**. We observe a sharp upward trend initially (high ROI for shifting from Arts to Tech), but the curve eventually plateaus. This effectively identifies the point of **"diminishing returns"**—once a school reaches a certain level of technical specialization, adding further engineering programs offers minimal marginal gain in earnings.
 
 ### RQ2: Graduation Rate (Interaction Analysis)
 *   **Question:** Does the benefit of a "Tech Curriculum" depend on the *Type of School*?
 *   **Rationale for Methods:**
     *   **Interaction Model:** Standard regression assumes independent effects. We explicitly modeled the **Interaction** (`PC1 * Cluster`) to test "Contextual Efficacy"—the idea that a curriculum strategy working for an Elite school might fail for a Budget school.
     *   **Policy Relevance:** This directly challenges "one size fits all" educational policies.
-*   **Findings:** Context matters. Technical rigor is positively associated with graduation rates at Elite schools but neutral/negative at under-resourced schools.
+*   **Detailed Plot Analysis (Findings):** The Interaction Plot displays **diverging slopes**, providing visual evidence that the tech effect depends on school type. For "Elite" schools (Cluster 1), the slope is positive, suggesting technical rigor aligns with high graduation rates. However, for "Budget" or "Commuter" schools, the slope is flatter or even negative. This supports the hypothesis that resource-intensive curricula may burden students in under-funded environments if not supported by adequate infrastructure.
 
 ### RQ3: Classification (Value Analysis)
 *   **Question:** Can we accurately classify "High Value" schools (High Earnings, Low Cost)?
 *   **Rationale for Methods:**
     *   **K-Nearest Neighbors (KNN):** "Value" is a local phenomenon. High-value schools often exist as "pockets" or clusters in the feature space (e.g., State Tech Schools, Elite Privates). KNN classifies based on local similarity (Euclidean distance) in this multi-dimensional space, capturing these irregular clusters better than a linear dividing line (like Logistic Regression).
-*   **Findings:** High-value schools form distinct local clusters, suggesting that value is a predictable trait based on observable characteristics.
+*   **Detailed Plot Analysis (Findings):** The Decision Boundary Plot shows that "High Value" schools (Yellow/Teal points) form distinct **local clusters** in the PC1 vs. PC2 landscape. They do not follow a simple straight line. KNN successfully maps these irregular "pockets of excellence," confirming that "Value" is a predictable trait defined by specific combinations of curriculum and cost.
 
 ### RQ4: Spatial Analysis (Geography)
 *   **Question:** Do "Education Deserts" (geographic isolation) negatively impact completion rates?
 *   **Rationale for Methods:**
     *   **Spatial Feature Engineering (Haversine):** Standard datasets lack "Isolation" metrics. We engineered this feature manually using the Haversine formula to account for the Earth's curvature, providing a rigorous measure of physical access.
-*   **Findings:** Geographic isolation is a significant negative predictor of student success ($p < 0.05$), highlighting structural inequities in rural areas.
+*   **Detailed Plot Analysis (Findings):** The Geographic Map visualizes "Isolation" (point size) vs. Graduation Rate (color). The pattern is striking: large points (highly isolated schools in "Education Deserts") are consistently darker in color (lower graduation rates). This visual correlation is statistically supported by our regression ($p < 0.05$), confirming that geographic isolation acts as a structural barrier to student success.
 
 ---
 

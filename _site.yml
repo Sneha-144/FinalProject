@@ -10,7 +10,7 @@ navbar:
     - text: "Introduction"
       href: intro.html
     - text: "Data Analysis"
-      href: analysis.html
+      href: final_project.html
     - text: "Source Code"
       href: code.html
     - text: "Conclusion"

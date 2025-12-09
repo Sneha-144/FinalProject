@@ -326,7 +326,7 @@ div.tocify {
   <a href="intro.html">Introduction</a>
 </li>
 <li>
-  <a href="analysis.html">Data Analysis</a>
+  <a href="final_project.html">Data Analysis</a>
 </li>
 <li>
   <a href="code.html">Source Code</a>
@@ -400,9 +400,15 @@ Box” problem of Random Forests, we used PDPs to isolate the marginal
 effect of the “Tech Curriculum” (PC1) on earnings, allowing us to
 visualize the exact shape of the relationship.</li>
 </ul></li>
-<li><strong>Findings:</strong> The “Tech Premium” exists but plateaus.
-Adding engineering programs helps, but only up to a point (diminishing
-returns).</li>
+<li><strong>Detailed Plot Analysis (Findings):</strong> The Partial
+Dependence Plot reveals a critical insight: the relationship between
+Tech Focus (<code>PC1</code>) and Earnings is
+<strong>non-linear</strong>. We observe a sharp upward trend initially
+(high ROI for shifting from Arts to Tech), but the curve eventually
+plateaus. This effectively identifies the point of <strong>“diminishing
+returns”</strong>—once a school reaches a certain level of technical
+specialization, adding further engineering programs offers minimal
+marginal gain in earnings.</li>
 </ul>
 </div>
 <div id="rq2-graduation-rate-interaction-analysis"
@@ -421,9 +427,15 @@ Elite school might fail for a Budget school.</li>
 <li><strong>Policy Relevance:</strong> This directly challenges “one
 size fits all” educational policies.</li>
 </ul></li>
-<li><strong>Findings:</strong> Context matters. Technical rigor is
-positively associated with graduation rates at Elite schools but
-neutral/negative at under-resourced schools.</li>
+<li><strong>Detailed Plot Analysis (Findings):</strong> The Interaction
+Plot displays <strong>diverging slopes</strong>, providing visual
+evidence that the tech effect depends on school type. For “Elite”
+schools (Cluster 1), the slope is positive, suggesting technical rigor
+aligns with high graduation rates. However, for “Budget” or “Commuter”
+schools, the slope is flatter or even negative. This supports the
+hypothesis that resource-intensive curricula may burden students in
+under-funded environments if not supported by adequate
+infrastructure.</li>
 </ul>
 </div>
 <div id="rq3-classification-value-analysis" class="section level3">
@@ -440,9 +452,13 @@ classifies based on local similarity (Euclidean distance) in this
 multi-dimensional space, capturing these irregular clusters better than
 a linear dividing line (like Logistic Regression).</li>
 </ul></li>
-<li><strong>Findings:</strong> High-value schools form distinct local
-clusters, suggesting that value is a predictable trait based on
-observable characteristics.</li>
+<li><strong>Detailed Plot Analysis (Findings):</strong> The Decision
+Boundary Plot shows that “High Value” schools (Yellow/Teal points) form
+distinct <strong>local clusters</strong> in the PC1 vs. PC2 landscape.
+They do not follow a simple straight line. KNN successfully maps these
+irregular “pockets of excellence,” confirming that “Value” is a
+predictable trait defined by specific combinations of curriculum and
+cost.</li>
 </ul>
 </div>
 <div id="rq4-spatial-analysis-geography" class="section level3">
@@ -457,10 +473,14 @@ datasets lack “Isolation” metrics. We engineered this feature manually
 using the Haversine formula to account for the Earth’s curvature,
 providing a rigorous measure of physical access.</li>
 </ul></li>
-<li><strong>Findings:</strong> Geographic isolation is a significant
-negative predictor of student success (<span class="math inline">\(p
-&lt; 0.05\)</span>), highlighting structural inequities in rural
-areas.</li>
+<li><strong>Detailed Plot Analysis (Findings):</strong> The Geographic
+Map visualizes “Isolation” (point size) vs. Graduation Rate (color). The
+pattern is striking: large points (highly isolated schools in “Education
+Deserts”) are consistently darker in color (lower graduation rates).
+This visual correlation is statistically supported by our regression
+(<span class="math inline">\(p &lt; 0.05\)</span>), confirming that
+geographic isolation acts as a structural barrier to student
+success.</li>
 </ul>
 <hr />
 </div>
