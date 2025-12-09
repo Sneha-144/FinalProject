@@ -1,0 +1,21 @@
+---
+title: "About the Project"
+---
+
+# About
+
+### The Course
+**STAT 515: Visualization and Analytics with R**  
+George Mason University  
+Fall 2025
+
+### The Author
+**Student Name:** Sneha Sri
+**Role:** Data Analyst & Researcher
+
+### The Data
+**Source:** [US Department of Education College Scorecard](https://collegescorecard.ed.gov/data/)  
+**Dataset:** Most Recent Cohorts (Institution Level)
+
+### Project Goal
+To apply advanced statistical learning and visualization techniques to understand the key drivers of institutional success in higher education.

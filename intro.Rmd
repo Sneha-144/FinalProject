@@ -1,0 +1,17 @@
+---
+title: "Introduction & Objectives"
+---
+
+# 1. Introduction & Objectives
+
+This project moves beyond simple descriptive statistics to apply **Master's Level Machine Learning and Spatial Analysis** techniques to the College Scorecard dataset.
+
+**Our Research Objectives:**
+
+1.  **Earnings (Non-Linear):** Can we predict 10-year earnings using *Random Forest* to capture non-linear curriculum effects?
+
+2.  **Graduation Rate (Interaction):** Does the impact of a "Tech Focus" depend on the *School Type* (Elite vs. Budget)?
+
+3.  **Classification (SVM):** Can a *Support Vector Machine* accurately classify "High Value" schools?
+
+4.  **Spatial Analysis (Geography):** Do "Education Deserts" (geographic isolation) negatively impact completion rates?
