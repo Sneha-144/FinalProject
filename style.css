@@ -1,0 +1,20 @@
+body {
+  background-color: #e9ecef; /* Soft grey to reduce glare */
+  color: #333;
+}
+
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #ffffff; /* Keep content readable */
+  padding: 30px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05); /* Subtle shadow for depth */
+  border-radius: 8px;
+}
+
+.navbar {
+    margin-bottom: 0;
+}

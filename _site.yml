@@ -19,7 +19,8 @@ navbar:
       href: about.html
 output:
   html_document:
-    theme: sandstone
+    theme: spacelab
+    css: style.css
     highlight: textmate
     toc: true
     toc_float: true
