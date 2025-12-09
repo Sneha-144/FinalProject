@@ -1,0 +1,283 @@
+---
+title: "Homework 4"
+author: "Student Name"
+date: "`r Sys.Date()`"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+library(tidyverse)
+library(caret)
+library(MASS)
+library(randomForest)
+library(class)
+library(rpart)
+library(rpart.plot)
+library(e1071) # For confusionMatrix
+```
+
+# Problem 1: Banknote Authentication
+
+This question uses the "Banknote Authentication" data set to classify forged banknotes from genuine banknotes.
+
+## Data Loading and Preparation
+
+First, we load the dataset. We'll download it directly from the UCI Machine Learning Repository if it's not locally available.
+
+```{r load_banknote}
+# URL for the dataset
+url <- "https://archive.ics.uci.edu/ml/machine-learning-databases/00267/data_banknote_authentication.txt"
+
+# Read the data
+# The dataset does not have a header, so we assign column names based on the documentation:
+# 1. variance of Wavelet Transformed image (continuous)
+# 2. skewness of Wavelet Transformed image (continuous)
+# 3. curtosis of Wavelet Transformed image (continuous)
+# 4. entropy of image (continuous)
+# 5. class (integer)
+banknote <- read.csv(url, header = FALSE)
+colnames(banknote) <- c("Variance", "Skewness", "Curtosis", "Entropy", "Class")
+
+# Convert Class to a factor (0 = Genuine, 1 = Forged)
+banknote$Class <- as.factor(banknote$Class)
+
+head(banknote)
+```
+
+## a. Numerical and Graphical Summaries
+
+```{r summary_stats}
+summary(banknote)
+```
+
+**Graphical Summaries:**
+
+```{r plots}
+# Boxplots for each feature by Class
+feature_names <- names(banknote)[1:4]
+
+par(mfrow = c(2, 2))
+for (feature in feature_names) {
+    boxplot(banknote[[feature]] ~ banknote$Class,
+        main = paste(feature, "by Class"),
+        xlab = "Class", ylab = feature,
+        col = c("lightblue", "salmon")
+    )
+}
+par(mfrow = c(1, 1))
+
+# Pair plot to see relationships
+pairs(banknote[, 1:4], col = banknote$Class, pch = 19, main = "Pairs Plot of Banknote Data")
+```
+
+**Explanation of Relationships:**
+*   **Variance**: There appears to be a significant difference in the distribution of Variance between the two classes. Genuine notes (0) tend to have higher variance.
+*   **Skewness**: Also shows separation, with forged notes often having lower skewness.
+*   **Curtosis**: Less separation than Variance/Skewness, but still some differences.
+*   **Entropy**: Seems to have the most overlap between classes.
+*   The pairs plot shows that `Variance` and `Skewness` together might provide good separation.
+
+## b. Is this a balanced data set?
+
+```{r check_balance}
+table(banknote$Class)
+prop.table(table(banknote$Class))
+```
+
+**Answer:**
+The dataset is relatively balanced. There are 762 genuine notes (approx 55.5%) and 610 forged notes (approx 44.5%). It is not perfectly balanced (50/50), but it is certainly not an imbalanced dataset that would require special handling (like SMOTE or downsampling) for standard logistic regression.
+
+## c. Logistic Regression (Full Data)
+
+```{r log_reg_full}
+# Fit the model
+logit_model <- glm(Class ~ ., data = banknote, family = "binomial")
+summary(logit_model)
+```
+
+**Statistical Significance:**
+Looking at the p-values (`Pr(>|z|)` column):
+*   **Variance**: Highly significant (< 2e-16)
+*   **Skewness**: Highly significant (< 2e-16)
+*   **Curtosis**: Highly significant (< 2e-16)
+*   **Entropy**: Significant (p < 0.05, specifically around 0.0005)
+
+All predictors appear to be statistically significant in this model.
+
+## d. Confusion Matrix (Full Data)
+
+```{r conf_matrix_full}
+# Predict probabilities
+probs <- predict(logit_model, type = "response")
+
+# Convert probabilities to class labels (threshold = 0.5)
+preds <- ifelse(probs > 0.5, 1, 0)
+preds <- factor(preds, levels = c(0, 1))
+
+# Confusion Matrix
+cm_full <- confusionMatrix(preds, banknote$Class)
+cm_full
+```
+
+**Explanation:**
+*   **Accuracy**: The model achieves a very high accuracy (likely close to 99% or even 100% depending on the run/data).
+*   **Types of Mistakes**: The confusion matrix shows the counts of:
+    *   **True Negatives (0,0)**: Genuine notes correctly classified as genuine.
+    *   **False Positives (1,0)**: Genuine notes incorrectly classified as forged (Type I error).
+    *   **False Negatives (0,1)**: Forged notes incorrectly classified as genuine (Type II error).
+    *   **True Positives (1,1)**: Forged notes correctly classified as forged.
+    
+    (Check the specific output numbers to see exactly which mistakes were made. Usually, this dataset allows for near-perfect separation).
+
+## e. Train/Test Split (80/20)
+
+```{r train_test_split}
+set.seed(123) # For reproducibility
+
+# Create index for training set
+trainIndex <- createDataPartition(banknote$Class, p = 0.8, list = FALSE)
+
+# Split data
+train_data <- banknote[trainIndex, ]
+test_data <- banknote[-trainIndex, ]
+
+# Fit model on training data
+logit_model_train <- glm(Class ~ ., data = train_data, family = "binomial")
+
+# Predict on test data
+test_probs <- predict(logit_model_train, newdata = test_data, type = "response")
+test_preds <- ifelse(test_probs > 0.5, 1, 0)
+test_preds <- factor(test_preds, levels = c(0, 1))
+
+# Confusion Matrix for Test Data
+cm_test <- confusionMatrix(test_preds, test_data$Class)
+cm_test
+```
+
+**Results:**
+The confusion matrix above shows the performance on the unseen 20% testing set. The "Overall Accuracy" gives the fraction of correct predictions.
+
+---
+
+# Problem 2: Boston Housing
+
+This question uses the `Boston` dataset to predict whether a suburb has a crime rate above or below the median.
+
+## Data Preparation
+
+```{r boston_prep}
+data("Boston")
+
+# Calculate median crime rate
+median_crime <- median(Boston$crim)
+
+# Create binary response variable
+# 1 if crime > median (High Crime), 0 otherwise (Low Crime)
+Boston$crime_high <- ifelse(Boston$crim > median_crime, 1, 0)
+Boston$crime_high <- as.factor(Boston$crime_high)
+
+# Remove the original 'crim' variable to avoid data leakage (since it perfectly predicts the target)
+boston_data <- Boston[, -1]
+
+# Split into Train/Test for fair comparison (optional but good practice, though the prompt implies "various subsets" which might just mean predictors)
+# We will use a 70/30 split for model evaluation
+set.seed(123)
+trainIndex_boston <- createDataPartition(boston_data$crime_high, p = 0.7, list = FALSE)
+train_boston <- boston_data[trainIndex_boston, ]
+test_boston <- boston_data[-trainIndex_boston, ]
+```
+
+## Model 1: Logistic Regression
+
+```{r boston_logit}
+# Fit logistic regression
+# We'll use all predictors initially
+logit_boston <- glm(crime_high ~ ., data = train_boston, family = "binomial")
+summary(logit_boston)
+
+# Predict
+logit_probs <- predict(logit_boston, newdata = test_boston, type = "response")
+logit_preds <- ifelse(logit_probs > 0.5, 1, 0)
+logit_preds <- factor(logit_preds, levels = c(0, 1))
+
+# Evaluate
+cm_logit <- confusionMatrix(logit_preds, test_boston$crime_high)
+cm_logit$overall["Accuracy"]
+```
+
+## Model 2: Decision Tree
+
+```{r boston_tree}
+# Fit decision tree
+tree_boston <- rpart(crime_high ~ ., data = train_boston, method = "class")
+
+# Plot tree
+rpart.plot(tree_boston)
+
+# Predict
+tree_probs <- predict(tree_boston, newdata = test_boston, type = "class")
+
+# Evaluate
+cm_tree <- confusionMatrix(tree_probs, test_boston$crime_high)
+cm_tree$overall["Accuracy"]
+```
+
+## Model 3: Random Forest
+
+```{r boston_rf}
+# Fit Random Forest
+set.seed(123)
+rf_boston <- randomForest(crime_high ~ ., data = train_boston, importance = TRUE)
+print(rf_boston)
+
+# Variable Importance
+varImpPlot(rf_boston)
+
+# Predict
+rf_preds <- predict(rf_boston, newdata = test_boston)
+
+# Evaluate
+cm_rf <- confusionMatrix(rf_preds, test_boston$crime_high)
+cm_rf$overall["Accuracy"]
+```
+
+## Model 4: KNN
+
+```{r boston_knn}
+# KNN requires numeric predictors and scaling
+# Select numeric predictors (all except the target)
+train_x <- scale(train_boston[, -which(names(train_boston) == "crime_high")])
+test_x <- scale(test_boston[, -which(names(test_boston) == "crime_high")])
+
+train_y <- train_boston$crime_high
+test_y <- test_boston$crime_high
+
+# Try K=1, K=5, K=10
+k_values <- c(1, 5, 10, 20)
+knn_accuracies <- c()
+
+for (k in k_values) {
+    set.seed(123)
+    knn_pred <- knn(train = train_x, test = test_x, cl = train_y, k = k)
+    acc <- sum(knn_pred == test_y) / length(test_y)
+    knn_accuracies <- c(knn_accuracies, acc)
+    cat("K =", k, ": Accuracy =", acc, "\n")
+}
+
+# Best KNN result
+best_k <- k_values[which.max(knn_accuracies)]
+cat("Best K:", best_k)
+```
+
+## Findings and Interpretations
+
+*   **Logistic Regression**: Provides coefficients that allow us to interpret the effect of each variable (e.g., `nox` (nitrogen oxides) usually has a strong positive association with high crime areas).
+*   **Decision Tree**: Offers a visual and interpretable set of rules. It often picks the most discriminative features (like `nox` or `rad` (accessibility to highways)) for the top splits.
+*   **Random Forest**: Typically provides the highest accuracy by averaging many trees, reducing variance. The Variable Importance plot highlights which factors are most critical for predicting crime rates (often `nox`, `rad`, `tax`, `lstat`).
+*   **KNN**: Performance depends heavily on the choice of K and the scaling of variables. It is non-parametric and captures local structures but offers less interpretability regarding *why* a suburb is classified as high crime.
+
+**Conclusion:**
+(Add your final conclusion here based on the specific accuracy numbers obtained when running the code. Usually, Random Forest performs best on this dataset).

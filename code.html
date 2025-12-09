@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Project Code</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Final Project</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="code.html">Code</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Project Code</h1>
+
+</div>
+
+
+<div id="data-preparation" class="section level1">
+<h1>Data Preparation</h1>
+<pre class="r"><code># Load Libraries
+required_packages &lt;- c(&quot;tidyverse&quot;, &quot;plotly&quot;, &quot;broom&quot;, &quot;scales&quot;, &quot;randomForest&quot;, &quot;glmnet&quot;, &quot;caret&quot;, &quot;rpart&quot;, &quot;rpart.plot&quot;, &quot;pdp&quot;, &quot;e1071&quot;)
+new_packages &lt;- required_packages[!(required_packages %in% installed.packages()[, &quot;Package&quot;])]
+if (length(new_packages)) install.packages(new_packages, repos = &quot;http://cran.us.r-project.org&quot;)
+
+library(tidyverse)
+library(scales)
+library(plotly)
+library(randomForest)
+library(caret)
+library(rpart)
+library(rpart.plot)
+library(pdp)
+library(e1071)
+
+# Load Data
+file_path &lt;- &quot;College_Scorecard_Raw_Data_10032025/Most-Recent-Cohorts-Institution.csv&quot;
+cols_to_keep &lt;- c(
+    &quot;INSTNM&quot;, &quot;STABBR&quot;, &quot;CONTROL&quot;, &quot;REGION&quot;, &quot;LOCALE&quot;, &quot;LATITUDE&quot;, &quot;LONGITUDE&quot;,
+    &quot;ADM_RATE&quot;, &quot;SAT_AVG&quot;, &quot;UGDS&quot;, &quot;COSTT4_A&quot;, &quot;TUITIONFEE_IN&quot;, &quot;TUITIONFEE_OUT&quot;,
+    &quot;MD_EARN_WNE_P10&quot;, &quot;C150_4&quot;, &quot;GRAD_DEBT_MDN&quot;, &quot;PCTPELL&quot;, &quot;INEXPFTE&quot;,
+    &quot;PCIP01&quot;, &quot;PCIP03&quot;, &quot;PCIP04&quot;, &quot;PCIP05&quot;, &quot;PCIP09&quot;, &quot;PCIP10&quot;, &quot;PCIP11&quot;,
+    &quot;PCIP12&quot;, &quot;PCIP13&quot;, &quot;PCIP14&quot;, &quot;PCIP15&quot;, &quot;PCIP16&quot;, &quot;PCIP19&quot;, &quot;PCIP22&quot;,
+    &quot;PCIP23&quot;, &quot;PCIP24&quot;, &quot;PCIP25&quot;, &quot;PCIP26&quot;, &quot;PCIP27&quot;, &quot;PCIP29&quot;, &quot;PCIP30&quot;,
+    &quot;PCIP31&quot;, &quot;PCIP38&quot;, &quot;PCIP39&quot;, &quot;PCIP40&quot;, &quot;PCIP41&quot;, &quot;PCIP42&quot;, &quot;PCIP43&quot;,
+    &quot;PCIP44&quot;, &quot;PCIP45&quot;, &quot;PCIP46&quot;, &quot;PCIP47&quot;, &quot;PCIP48&quot;, &quot;PCIP49&quot;, &quot;PCIP50&quot;,
+    &quot;PCIP51&quot;, &quot;PCIP52&quot;, &quot;PCIP54&quot;
+)
+
+df &lt;- read_csv(file_path, na = c(&quot;NULL&quot;, &quot;PrivacySuppressed&quot;, &quot;NA&quot;, &quot;PS&quot;, &quot;&quot;), col_select = all_of(cols_to_keep), show_col_types = FALSE)
+
+# Clean Data
+numeric_cols &lt;- setdiff(names(df), c(&quot;INSTNM&quot;, &quot;STABBR&quot;, &quot;CONTROL&quot;, &quot;REGION&quot;, &quot;LOCALE&quot;))
+df[numeric_cols] &lt;- lapply(df[numeric_cols], as.numeric)
+df$CONTROL &lt;- as.factor(df$CONTROL)
+df$REGION &lt;- as.factor(df$REGION)
+df_clean &lt;- df %&gt;%
+    filter(!is.na(MD_EARN_WNE_P10), !is.na(C150_4), !is.na(COSTT4_A)) %&gt;%
+    na.omit()</code></pre>
+</div>
+<div id="feature-engineering-pca-clustering" class="section level1">
+<h1>Feature Engineering (PCA &amp; Clustering)</h1>
+<pre class="r"><code># PCA
+pcip_cols &lt;- grep(&quot;PCIP&quot;, names(df_clean), value = TRUE)
+zero_var_cols &lt;- pcip_cols[sapply(df_clean[, pcip_cols], var) == 0]
+if (length(zero_var_cols) &gt; 0) pcip_cols &lt;- setdiff(pcip_cols, zero_var_cols)
+pca_res &lt;- prcomp(df_clean[, pcip_cols], scale. = TRUE)
+df_clean &lt;- cbind(df_clean, pca_res$x[, 1:5])
+
+# Clustering
+cluster_vars &lt;- c(&quot;COSTT4_A&quot;, &quot;UGDS&quot;, &quot;ADM_RATE&quot;, &quot;SAT_AVG&quot;)
+df_scaled &lt;- scale(df_clean[, cluster_vars])
+set.seed(123)
+kmeans_res &lt;- kmeans(df_scaled, centers = 3)
+df_clean$Cluster &lt;- as.factor(kmeans_res$cluster)</code></pre>
+</div>
+<div id="rq1-earnings-prediction-random-forest" class="section level1">
+<h1>RQ1: Earnings Prediction (Random Forest)</h1>
+<pre class="r"><code>set.seed(123)
+predictors &lt;- c(&quot;PC1&quot;, &quot;PC2&quot;, &quot;PC3&quot;, &quot;PC4&quot;, &quot;PC5&quot;, &quot;Cluster&quot;, &quot;ADM_RATE&quot;, &quot;SAT_AVG&quot;, &quot;UGDS&quot;, &quot;COSTT4_A&quot;, &quot;CONTROL&quot;, &quot;REGION&quot;)
+rf_formula &lt;- as.formula(paste(&quot;MD_EARN_WNE_P10 ~&quot;, paste(predictors, collapse = &quot;+&quot;)))
+rf_model &lt;- randomForest(rf_formula, data = df_clean, ntree = 100, importance = TRUE)
+
+# Partial Dependence Plot
+pdp_pc1 &lt;- pdp::partial(rf_model, pred.var = &quot;PC1&quot;, train = df_clean)
+p2 &lt;- ggplot(pdp_pc1, aes(x = PC1, y = yhat)) +
+    geom_line(color = &quot;darkgreen&quot;, linewidth = 1.2) +
+    labs(title = &quot;Partial Dependence: Tech Focus (PC1) vs. Earnings&quot;, x = &quot;PC1 (Tech Factor)&quot;, y = &quot;Predicted Earnings&quot;) +
+    theme_minimal()
+ggplotly(p2)</code></pre>
+</div>
+<div id="rq2-graduation-rate-interaction" class="section level1">
+<h1>RQ2: Graduation Rate (Interaction)</h1>
+<pre class="r"><code># Interaction Model
+lm_interaction &lt;- lm(C150_4 ~ PC1 * Cluster + SAT_AVG + ADM_RATE + COSTT4_A + UGDS + CONTROL + PCTPELL, data = df_clean)
+summary(lm_interaction)
+
+# Interaction Plot
+p3 &lt;- ggplot(df_clean, aes(x = PC1, y = C150_4, color = Cluster)) +
+    geom_point(alpha = 0.3) +
+    geom_smooth(method = &quot;lm&quot;, se = FALSE) +
+    labs(title = &quot;Interaction Effect: Curriculum x School Type&quot;, x = &quot;PC1 (Tech Factor)&quot;, y = &quot;Graduation Rate&quot;) +
+    theme_minimal()
+ggplotly(p3)</code></pre>
+</div>
+<div id="rq3-classification-svm" class="section level1">
+<h1>RQ3: Classification (SVM)</h1>
+<pre class="r"><code># Define High Value
+earn_thresh &lt;- quantile(df_clean$MD_EARN_WNE_P10, 0.66)
+cost_thresh &lt;- quantile(df_clean$COSTT4_A, 0.50)
+df_clean &lt;- df_clean %&gt;% mutate(High_Value = as.factor(ifelse(MD_EARN_WNE_P10 &gt; earn_thresh &amp; COSTT4_A &lt; cost_thresh, &quot;Yes&quot;, &quot;No&quot;)))
+
+# Train SVM
+svm_model &lt;- svm(High_Value ~ SAT_AVG + ADM_RATE + UGDS + REGION + PC1 + Cluster, data = df_clean, kernel = &quot;radial&quot;, cost = 10, scale = TRUE)
+
+# Decision Boundary Visualization (PC1 vs PC2)
+df_clean$Pred_SVM &lt;- predict(svm_model, newdata = df_clean)
+p4 &lt;- ggplot(df_clean, aes(x = PC1, y = PC2, color = Pred_SVM)) +
+    geom_point(alpha = 0.6) +
+    labs(title = &quot;SVM Decision Boundary (Tech vs Arts Factors)&quot;, x = &quot;PC1 (Tech Factor)&quot;, y = &quot;PC2 (Arts Factor)&quot;) +
+    theme_minimal()
+ggplotly(p4)</code></pre>
+</div>
+<div id="rq4-spatial-analysis" class="section level1">
+<h1>RQ4: Spatial Analysis</h1>
+<pre class="r"><code># Haversine Function
+deg2rad &lt;- function(deg) {
+    return(deg * pi / 180)
+}
+calculate_nearest_dist &lt;- function(lat, lon, all_lats, all_lons) {
+    R &lt;- 6371 # Earth radius
+    lat1 &lt;- deg2rad(lat)
+    lon1 &lt;- deg2rad(lon)
+    lats2 &lt;- deg2rad(all_lats)
+    lons2 &lt;- deg2rad(all_lons)
+    dlat &lt;- lats2 - lat1
+    dlon &lt;- lons2 - lon1
+    a &lt;- sin(dlat / 2)^2 + cos(lat1) * cos(lats2) * sin(dlon / 2)^2
+    c &lt;- 2 * atan2(sqrt(a), sqrt(1 - a))
+    d &lt;- R * c
+    d[d == 0] &lt;- Inf
+    return(min(d, na.rm = TRUE))
+}
+
+# Calculate Distances
+distances &lt;- numeric(nrow(df_clean))
+lats &lt;- df_clean$LATITUDE
+lons &lt;- df_clean$LONGITUDE
+for (i in 1:nrow(df_clean)) distances[i] &lt;- calculate_nearest_dist(lats[i], lons[i], lats, lons)
+df_clean$Nearest_Dist &lt;- distances
+
+# Spatial Regression
+lm_spatial &lt;- lm(C150_4 ~ Nearest_Dist + INEXPFTE + CONTROL + REGION, data = df_clean)
+summary(lm_spatial)
+
+# Map Visualization
+p5 &lt;- ggplot(df_clean, aes(x = LONGITUDE, y = LATITUDE, color = C150_4, size = Nearest_Dist)) +
+    geom_point(alpha = 0.7) +
+    scale_color_viridis_c(option = &quot;plasma&quot;, name = &quot;Grad Rate&quot;) +
+    borders(&quot;state&quot;, colour = &quot;gray80&quot;, fill = NA) +
+    labs(title = &quot;Geography of Completion Rates&quot;, subtitle = &quot;Size = Isolation (Distance)&quot;, x = &quot;Longitude&quot;, y = &quot;Latitude&quot;) +
+    theme_minimal() +
+    coord_fixed(1.3)
+ggplotly(p5)</code></pre>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

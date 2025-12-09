@@ -1,0 +1,14 @@
+# Data
+College_Scorecard_Raw_Data_10032025/
+*.zip
+*.csv
+*.RData
+*.Rhistory
+
+# System
+.DS_Store
+.Rproj.user
+.vscode/
+
+# Build artifacts (optional, but we want to publish these so keep them)
+# _site/ 

@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Final_Project_Comprehensive_Guide</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Final Project</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="code.html">Code</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+
+</div>
+
+
+<div
+id="final-project-comprehensive-guide-college-scorecard-analysis-v2"
+class="section level1">
+<h1>Final Project Comprehensive Guide: College Scorecard Analysis
+(v2)</h1>
+<p>This document contains <strong>everything</strong> you need to know
+about your analysis. It covers the variables, the methods, the code
+steps, and the plot interpretations in simple, precise terms.</p>
+<hr />
+</div>
+<div id="part-1-data-variables-the-ingredients" class="section level1">
+<h1>Part 1: Data &amp; Variables (The “Ingredients”)</h1>
+<div id="outcome-variables-what-we-predict" class="section level2">
+<h2>1. Outcome Variables (What we predict)</h2>
+<ul>
+<li><strong><code>MD_EARN_WNE_P10</code> (Median Earnings 10 Years
+Later)</strong>
+<ul>
+<li><strong>Why Median?</strong> Averages are easily skewed by outliers.
+<ul>
+<li><em>Example:</em> Imagine 10 people in a bar earning $50k. The mean
+is $50k. Bill Gates walks in. The <strong>Mean</strong> jumps to $100
+Million, but the <strong>Median</strong> stays at $50k. The Median
+represents the <em>typical</em> student, not the lucky billionaire.</li>
+</ul></li>
+</ul></li>
+<li><strong><code>C150_4</code> (6-Year Graduation Rate)</strong>
+<ul>
+<li><strong>Why:</strong> The federal standard. It accounts for students
+taking extra time.</li>
+</ul></li>
+<li><strong><code>GRAD_DEBT_MDN</code> (Median Debt)</strong>
+<ul>
+<li><strong>Why:</strong> High earnings don’t matter if debt is huge.
+Essential for “Value” analysis.</li>
+</ul></li>
+</ul>
+</div>
+<div id="institutional-stats-the-school-characteristics"
+class="section level2">
+<h2>2. Institutional Stats (The School Characteristics)</h2>
+<ul>
+<li><strong><code>PCTPELL</code> (Percent Pell Grant)</strong>
+<ul>
+<li><strong>What it is:</strong> The % of students receiving federal aid
+for low income.</li>
+<li><strong>Why Control for it?</strong> Wealthier students generally
+graduate at higher rates because they don’t have to work two jobs and
+have better support networks. If we compare a rich school to a poor
+school directly, the rich school looks “better” just because its
+students are rich. By including <code>PCTPELL</code>, we “control” for
+this, allowing us to judge the school’s performance fairly, regardless
+of its students’ background.</li>
+</ul></li>
+<li><strong><code>ADM_RATE</code> (Admission Rate):</strong> Proxy for
+Selectivity.</li>
+<li><strong><code>SAT_AVG</code> (Average SAT):</strong> Measures
+student academic quality.</li>
+<li><strong><code>COSTT4_A</code> (Average Annual Cost):</strong> The
+“Sticker Price”.</li>
+</ul>
+</div>
+<div id="program-mix-the-secret-sauce" class="section level2">
+<h2>3. Program Mix (The “Secret Sauce”)</h2>
+<ul>
+<li><strong><code>PCIPxx</code> Variables (e.g., <code>PCIP14</code> =
+Engineering %)</strong>
+<ul>
+<li><strong>Why:</strong> We test if <em>what</em> you teach matters
+more than <em>who</em> you admit.</li>
+</ul></li>
+</ul>
+<hr />
+</div>
+</div>
+<div id="part-2-methodology-the-masters-level-recipe"
+class="section level1">
+<h1>Part 2: Methodology (The “Master’s Level Recipe”)</h1>
+<blockquote>
+<p><strong>Note:</strong> This analysis strictly follows the methods
+taught in your <code>unsupervised.html</code> and
+<code>Logistic-n-knn.html</code> course modules, plus advanced
+techniques (Interaction, SVM) from reference projects.</p>
+</blockquote>
+<div id="method-1-dimensionality-reduction-pca" class="section level2">
+<h2>Method 1: Dimensionality Reduction (PCA)</h2>
+<ul>
+<li><strong>Source:</strong> <code>unsupervised.html</code></li>
+<li><strong>The Problem:</strong> We have 30+ major categories. Using
+all of them creates noise.</li>
+<li><strong>The Solution (PCA):</strong> We use <strong>Principal
+Component Analysis</strong> to compress these into “Indices” (e.g., PC1
+= “Tech Heavy”, PC2 = “Arts Heavy”). This captures the
+<em>structure</em> of the data without overfitting.</li>
+</ul>
+</div>
+<div id="method-2-unsupervised-learning-clustering"
+class="section level2">
+<h2>Method 2: Unsupervised Learning (Clustering)</h2>
+<ul>
+<li><strong>Source:</strong> <code>unsupervised.html</code></li>
+<li><strong>The Problem:</strong> Schools fall into natural groups
+(Archetypes) that we haven’t labeled.</li>
+<li><strong>The Solution (K-Means):</strong> We let the data group
+itself into clusters (e.g., “Elite”, “Commuter”, “Budget”). We then use
+these <code>Clusters</code> as predictors in our models.</li>
+</ul>
+</div>
+<div id="method-3-interaction-analysis-advanced-regression"
+class="section level2">
+<h2>Method 3: Interaction Analysis (Advanced Regression)</h2>
+<ul>
+<li><strong>Goal:</strong> To see if “One size fits all”.</li>
+<li><strong>The Question:</strong> Does a “Tech Focus” (PC1) help
+<em>all</em> schools, or does it depend on the <em>School Type</em>
+(Cluster)?</li>
+<li><strong>The Model:</strong> <code>Grad Rate ~ PC1 * Cluster</code>.
+We visually inspect if the lines cross (Interaction Effect) using an
+Interaction Plot.</li>
+</ul>
+</div>
+<div id="method-4-classification-svm-vs.-knn" class="section level2">
+<h2>Method 4: Classification (SVM vs. KNN)</h2>
+<ul>
+<li><strong>Source:</strong> <code>Logistic-n-knn.html</code> &amp;
+Reference Projects</li>
+<li><strong>Goal:</strong> Predict if a school is “High Value”.</li>
+<li><strong>Models:</strong>
+<ol style="list-style-type: decimal">
+<li><strong>K-Nearest Neighbors (KNN):</strong> Classifies based on
+similarity.</li>
+<li><strong>Support Vector Machine (SVM):</strong> Uses a complex
+“Hyperplane” to slice the data.</li>
+</ol></li>
+<li><strong>Metric (Kappa):</strong> We use <strong>Cohen’s
+Kappa</strong> to correct for “lucky guessing”.</li>
+</ul>
+</div>
+<div id="method-5-spatial-analysis-geography" class="section level2">
+<h2>Method 5: Spatial Analysis (Geography)</h2>
+<ul>
+<li><strong>Goal:</strong> To measure “Education Deserts”.</li>
+<li><strong>The Metric:</strong> We calculate the <strong>Distance to
+Nearest Competitor</strong> for every school using the Haversine Formula
+(calculating curvature of the earth).</li>
+<li><strong>The Question:</strong> Do schools that are geographically
+isolated have lower completion rates?</li>
+</ul>
+<hr />
+</div>
+</div>
+<div id="part-3-step-by-step-code-explanation" class="section level1">
+<h1>Part 3: Step-by-Step Code Explanation</h1>
+<div id="step-1-feature-engineering-pca-clustering"
+class="section level2">
+<h2>Step 1: Feature Engineering (PCA &amp; Clustering)</h2>
+<ul>
+<li><strong>PCA:</strong> We reduce 30+ majors to 5 Principal
+Components.</li>
+<li><strong>Clustering:</strong> We group schools into 3 distinct
+types.</li>
+</ul>
+</div>
+<div id="step-2-roi-prediction-earnings" class="section level2">
+<h2>Step 2: ROI Prediction (Earnings)</h2>
+<ul>
+<li><strong>Model:</strong> Random Forest using the new <strong>PCA
+Factors</strong> + <strong>Clusters</strong>.</li>
+<li><strong>New Plot (PDP):</strong> <strong>Partial Dependence
+Plot</strong>.
+<ul>
+<li><em>What it shows:</em> The exact “curve” of how Tech Focus affects
+Earnings. Does it keep going up, or does it plateau?</li>
+</ul></li>
+</ul>
+</div>
+<div id="step-3-at-risk-identification-grad-rate"
+class="section level2">
+<h2>Step 3: At-Risk Identification (Grad Rate)</h2>
+<ul>
+<li><strong>Interaction Model:</strong> We test
+<code>PC1 * Cluster</code>.</li>
+<li><strong>New Plot (Interaction):</strong> <strong>Interaction
+Plot</strong>.
+<ul>
+<li><em>What it shows:</em> Three lines (one for each Cluster). If they
+have different slopes, it means “Context Matters”.</li>
+<li><em>Example:</em> Tech might boost Grad Rate for “Elite” schools but
+hurt it for “Budget” schools (if resources are low).</li>
+</ul></li>
+</ul>
+</div>
+<div id="step-4-value-classification-the-best-deal"
+class="section level2">
+<h2>Step 4: Value Classification (The “Best Deal”)</h2>
+<ul>
+<li><strong>Models:</strong> KNN vs. SVM.</li>
+<li><strong>New Plot (Decision Boundary):</strong> <strong>SVM Boundary
+Plot</strong>.
+<ul>
+<li><em>What it shows:</em> A map of the “High Value” zone. You can
+visually see the “shape” of the winning schools in the PC1 vs PC2
+landscape.</li>
+</ul></li>
+<li><strong>Kappa Score:</strong> We compare which model is “smarter”
+(Higher Kappa).</li>
+</ul>
+</div>
+<div id="step-5-spatial-analysis-the-bonus" class="section level2">
+<h2>Step 5: Spatial Analysis (The Bonus)</h2>
+<ul>
+<li><strong>Map Plot:</strong> A map of the US.
+<ul>
+<li><strong>Color:</strong> Graduation Rate (Yellow = High, Purple =
+Low).</li>
+<li><strong>Size:</strong> Isolation (Larger dots = More isolated).</li>
+</ul></li>
+<li><strong>Insight:</strong> We check if the “Large Dots” (Isolated
+schools) tend to be “Purple” (Low Grad Rate).</li>
+</ul>
+<hr />
+</div>
+</div>
+<div id="summary-for-your-report" class="section level1">
+<h1>Summary for Your Report</h1>
+<ul>
+<li><strong>Key Insight:</strong> We moved beyond simple averages to use
+<strong>Machine Learning</strong> to disentangle the effects of
+<em>Student Wealth</em> (<code>PCTPELL</code>) vs. <em>School
+Quality</em> vs. <em>Program Mix</em>.</li>
+<li><strong>Conclusion:</strong> This approach allows us to identify
+“Hidden Gem” schools that offer high ROI despite lower prestige or
+cost.</li>
+</ul>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

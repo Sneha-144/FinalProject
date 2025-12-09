@@ -1,0 +1,14 @@
+name: "Final Project"
+output_dir: "."
+exclude: ["*.md", "*.docx", "*.pdf", "College_Scorecard_Raw_Data_10032025", "Homework4.Rmd"]
+navbar:
+  title: "Final Project"
+  left:
+    - text: "Home"
+      href: index.html
+    - text: "Code"
+      href: code.html
+output:
+  html_document:
+    theme: flatly
+    highlight: textmate
