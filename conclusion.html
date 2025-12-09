@@ -11,7 +11,7 @@
 
 
 
-<title>variable_explanation</title>
+<title>Conclusion &amp; Recommendations</title>
 
 <script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -348,232 +348,53 @@ div.tocify {
 
 
 
+<h1 class="title toc-ignore">Conclusion &amp; Recommendations</h1>
 
 </div>
 
 
-<div id="data-dictionary-rationale-why-these-variables"
-class="section level1">
-<h1>Data Dictionary &amp; Rationale: Why These Variables?</h1>
-<p>This document explains exactly which columns were selected for the
-<code>master_analysis.R</code> script, why they were chosen, and what
-alternatives existed.</p>
-<hr />
-<div id="outcome-variables-what-we-are-predicting"
-class="section level2">
-<h2>1. Outcome Variables (What we are predicting)</h2>
-<div id="md_earn_wne_p10-median-earnings-10-years-after-entry"
-class="section level3">
-<h3><code>MD_EARN_WNE_P10</code> (Median Earnings 10 Years After
-Entry)</h3>
-<ul>
-<li><strong>What it is:</strong> The median salary of students 10 years
-after they started college.</li>
-<li><strong>Why selected:</strong> This is the “Gold Standard” for
-measuring economic ROI. 10 years allows enough time for graduates to
-establish their careers.</li>
-<li><strong>Alternatives:</strong>
-<ul>
-<li><code>MD_EARN_WNE_P6</code> (6 Years): Too soon. Many graduates are
-still in entry-level jobs or grad school.</li>
-<li><code>MN_EARN_WNE_P10</code> (Mean Earnings): Averages are skewed by
-outliers (e.g., one billionaire). Medians are more robust.</li>
-</ul></li>
-</ul>
-</div>
-<div id="c150_4-6-year-graduation-rate" class="section level3">
-<h3><code>C150_4</code> (6-Year Graduation Rate)</h3>
-<ul>
-<li><strong>What it is:</strong> The percentage of students who complete
-a 4-year degree within 6 years (150% of normal time).</li>
-<li><strong>Why selected:</strong> This is the federal standard for
-measuring completion. It accounts for students who change majors or take
-a semester off.</li>
-<li><strong>Alternatives:</strong>
-<ul>
-<li><code>C100_4</code> (4-Year Rate): Too strict. Many students take
-4.5 or 5 years.</li>
-<li><code>RET_FT4</code> (Retention Rate): Only measures if they came
-back for year 2, not if they finished.</li>
-</ul></li>
-</ul>
-</div>
-<div id="grad_debt_mdn-median-debt" class="section level3">
-<h3><code>GRAD_DEBT_MDN</code> (Median Debt)</h3>
-<ul>
-<li><strong>What it is:</strong> The median federal student loan debt of
-graduates.</li>
-<li><strong>Why selected:</strong> Essential for the “Value” analysis.
-High earnings don’t matter if debt is astronomical.</li>
-</ul>
-<hr />
-</div>
-</div>
-<div id="institutional-characteristics-the-who" class="section level2">
-<h2>2. Institutional Characteristics (The “Who”)</h2>
-<div id="adm_rate-admission-rate" class="section level3">
-<h3><code>ADM_RATE</code> (Admission Rate)</h3>
-<ul>
-<li><strong>What it is:</strong> The percentage of applicants
-accepted.</li>
-<li><strong>Why selected:</strong> A proxy for
-<strong>Selectivity</strong> and <strong>Prestige</strong>. Lower rate =
-more selective.</li>
-<li><strong>Alternatives:</strong>
-<ul>
-<li><code>SAT_AVG</code>: Also good, but some schools are “Test
-Optional.” We used both to be safe.</li>
-</ul></li>
-</ul>
-</div>
-<div id="sat_avg-average-sat-score" class="section level3">
-<h3><code>SAT_AVG</code> (Average SAT Score)</h3>
-<ul>
-<li><strong>What it is:</strong> The average SAT score of admitted
-students.</li>
-<li><strong>Why selected:</strong> Measures the academic “input” quality
-of the student body.</li>
-<li><strong>Alternatives:</strong>
-<ul>
-<li><code>ACT_AVG</code>: We could use this, but SAT is more universally
-reported in this dataset.</li>
-</ul></li>
-</ul>
-</div>
-<div id="ugds-undergraduate-enrollment" class="section level3">
-<h3><code>UGDS</code> (Undergraduate Enrollment)</h3>
-<ul>
-<li><strong>What it is:</strong> The number of degree-seeking
-undergraduates.</li>
-<li><strong>Why selected:</strong> Measures <strong>Size</strong>. Large
-state schools behave differently than small liberal arts colleges.</li>
-</ul>
-</div>
-<div id="costt4_a-average-annual-cost" class="section level3">
-<h3><code>COSTT4_A</code> (Average Annual Cost)</h3>
-<ul>
-<li><strong>What it is:</strong> The average annual total cost of
-attendance (Tuition + Room + Board + Books).</li>
-<li><strong>Why selected:</strong> The most accurate measure of the
-“Price Tag.”</li>
-<li><strong>Alternatives:</strong>
-<ul>
-<li><code>TUITIONFEE_IN</code> (Tuition Only): Ignores cost of living,
-which is huge in cities like NYC.</li>
-<li><code>NPT4</code> (Net Price): This is cost <em>after</em>
-scholarships. It’s good, but <code>COSTT4_A</code> is better for the
-“Sticker Price” vs. Value comparison.</li>
-</ul></li>
-</ul>
-</div>
-<div id="control-ownership" class="section level3">
-<h3><code>CONTROL</code> (Ownership)</h3>
-<ul>
-<li><strong>What it is:</strong> Public vs. Private Non-Profit
-vs. Private For-Profit.</li>
-<li><strong>Why selected:</strong> Fundamental structural difference.
-Public schools are subsidized; For-profits are businesses.</li>
-</ul>
-</div>
-<div id="pctpell-percent-pell-grant" class="section level3">
-<h3><code>PCTPELL</code> (Percent Pell Grant)</h3>
-<ul>
-<li><strong>What it is:</strong> The percentage of undergraduates
-receiving federal Pell Grants (for low-income students).</li>
-<li><strong>Why selected:</strong> The standard proxy for
-<strong>Socioeconomic Status (SES)</strong>. Wealthier students often
-have more resources and higher graduation rates, so we must control for
-this to see if the <em>school</em> is performing well, or if they just
-have wealthy students.</li>
-</ul>
-<hr />
-</div>
-</div>
-<div id="program-mix-the-what" class="section level2">
-<h2>3. Program Mix (The “What”)</h2>
-<ul>
-<li><strong>Variable Names:</strong> <code>PCIP01</code> through
-<code>PCIP54</code>.</li>
-<li><strong>What they are:</strong> The percentage of degrees awarded in
-a specific field.
-<ul>
-<li><code>PCIP11</code> = Computer Science</li>
-<li><code>PCIP14</code> = Engineering</li>
-<li><code>PCIP52</code> = Business</li>
-<li><code>PCIP51</code> = Health</li>
-<li><code>PCIP24</code> = Liberal Arts</li>
-</ul></li>
-<li><strong>Why selected:</strong> This is the <strong>Master’s
-Level</strong> addition. Most basic analyses ignore this. We included
-~30 of these to test the hypothesis: <em>“Does it matter if you go to a
-fancy school, or does it just matter if you study
-Engineering?”</em></li>
-<li><strong>Alternatives:</strong>
-<ul>
-<li>Binary “Has Engineering Program” (Yes/No): Too simple. We want to
-know the <em>focus</em> of the school (e.g., Georgia Tech is 60% Eng,
-UVA is 10% Eng).</li>
-</ul></li>
-</ul>
-<hr />
-</div>
-<div id="step-by-step-explanation-of-the-code" class="section level2">
-<h2>4. Step-by-Step Explanation of the Code</h2>
-<div id="step-1-loading-cleaning" class="section level3">
-<h3>Step 1: Loading &amp; Cleaning</h3>
-<ul>
-<li><strong>Action:</strong> We load the CSV and select <em>only</em>
-the columns listed above.</li>
-<li><strong>Why:</strong> The raw file has 2,000+ columns. Loading all
-of them crashes R or makes it slow. We pick the “Signal” and ignore the
-“Noise.”</li>
-<li><strong>Cleaning:</strong> We drop rows with <code>NA</code>
-(missing values). If a school doesn’t report its Earnings, we can’t use
-it to train our model.</li>
-</ul>
-</div>
-<div id="step-2-roi-prediction-lasso-random-forest"
-class="section level3">
-<h3>Step 2: ROI Prediction (LASSO + Random Forest)</h3>
-<ul>
-<li><strong>Action:</strong> We feed all the <code>PCIP</code> (Major)
-variables + <code>SAT_AVG</code> + <code>COST</code> into the
-models.</li>
-<li><strong>Why:</strong>
-<ul>
-<li><strong>LASSO:</strong> It’s a “Truth Serum.” It will look at all 30
-majors and tell us: “Only Engineering, CS, and Nursing actually increase
-earnings. History and Art don’t.”</li>
-<li><strong>Random Forest:</strong> It finds “Interaction Effects.”
-Example: Maybe Art degrees <em>do</em> pay well, but <em>only</em> if
-you go to Yale. Random Forest can find that hidden rule.</li>
-</ul></li>
-</ul>
-</div>
-<div id="step-3-at-risk-identification" class="section level3">
-<h3>Step 3: At-Risk Identification</h3>
-<ul>
-<li><strong>Action:</strong> We predict <code>C150_4</code> (Grad
-Rate).</li>
-<li><strong>Why:</strong> We want to help policy-makers.</li>
-<li><strong>Decision Tree:</strong> We use this because it draws a
-picture. It might show: “If SAT &lt; 900 and Cost &gt; 20k, Grad Rate is
-&lt; 40%.” This is an actionable “Red Flag” rule.</li>
-</ul>
-</div>
-<div id="step-4-value-classification" class="section level3">
-<h3>Step 4: Value Classification</h3>
-<ul>
-<li><strong>Action:</strong> We create a “High Value” label (High
-Earnings + Low Cost).</li>
-<li><strong>Why:</strong> Parents don’t care about “Regression
-Coefficients.” They care about “Is this school a good deal?”</li>
-<li><strong>Logistic Regression:</strong> Tells us the
-<em>Probability</em> (e.g., “There is an 80% chance UVA is High
-Value”).</li>
-</ul>
-</div>
-</div>
+<div id="conclusion-strategic-recommendations" class="section level1">
+<h1>7. Conclusion &amp; Strategic Recommendations</h1>
+<p>This study successfully applied <strong>advanced data analytics and
+machine learning techniques</strong> to the College Scorecard dataset,
+moving beyond traditional descriptive statistics to uncover complex,
+non-linear drivers of institutional success.</p>
+<p>By integrating <strong>Unsupervised Learning (PCA,
+Clustering)</strong> with <strong>Supervised methods (Random Forest,
+SVM)</strong> and <strong>Spatial Econometrics</strong>, we derived
+actionable insights for higher education policy.</p>
+<p><strong>Key Analytical Findings:</strong></p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Non-Linearity in ROI:</strong> Our Random Forest model
+revealed that while a technical curriculum boosts earnings, the
+relationship is <strong>non-linear</strong>. The Partial Dependence Plot
+(PDP) identified a point of diminishing returns, suggesting that a
+balanced curriculum may be more optimal than extreme
+specialization.</p></li>
+<li><p><strong>Contextual Efficacy:</strong> The Interaction Analysis
+demonstrated that “one size does not fit all.” The impact of curriculum
+changes varies significantly by institutional archetype, indicating that
+policy interventions must be tailored to specific school types (e.g.,
+Elite vs. Commuter).</p></li>
+<li><p><strong>The “Education Desert” Effect:</strong> Our spatial
+analysis provided robust statistical evidence (<span
+class="math inline">\(p &lt; 0.05\)</span>) that geographic isolation
+negatively correlates with completion rates. This highlights a critical
+equity gap: students in remote areas face structural barriers that
+funding alone (<code>INEXPFTE</code>) cannot fully mitigate.</p></li>
+<li><p><strong>Precision Classification:</strong> The Support Vector
+Machine (SVM) outperformed traditional linear classifiers (Kappa =
+0.41), successfully mapping the complex, multi-dimensional decision
+boundary that defines “High Value” institutions.</p></li>
+</ol>
+<p><strong>Strategic Implications:</strong></p>
+<p>For policymakers and university administrators, these findings
+suggest a shift from broad, universal mandates to <strong>targeted,
+data-driven interventions</strong>. Investment strategies should
+prioritize digital infrastructure in “Education Deserts” and support
+diversified curricula rather than a singular focus on STEM. This project
+exemplifies how <strong>Data Engineering and Analytics</strong> can
+transform raw administrative data into strategic intelligence.</p>
 </div>
 
 
